@@ -9,10 +9,9 @@ namespace MyFirstProject
         static async Task Main(string[] args)
         {
             Random rnd = new Random();
-            string Kaart = "";
             int wallet = 100;
-            int inzet = 0;
             int KaartRnd;
+            int inzet = 0;
             int totaalspeler = 0;
             int totaaldealer = 0;
             int totaal = 0;
@@ -28,6 +27,12 @@ namespace MyFirstProject
 
             Console.WriteLine($"Hoeveel wil je inzetten?");
             inzet = Convert.ToInt16(Console.ReadLine());
+
+            while (inzet > wallet)
+            {
+                Console.WriteLine($"Dat is teveel, je wallet is {wallet}, kies een inzet");
+                inzet = Convert.ToInt16(Console.ReadLine());
+            }
 
 
             String[] kaarten = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace" };
@@ -99,7 +104,7 @@ namespace MyFirstProject
 
 
 
-                    if (totaal < 21)
+                    if (totaal <= 21)
                     {
                         Console.WriteLine($"wil je hitten?");
                         Console.WriteLine($"j/n");
@@ -137,28 +142,29 @@ namespace MyFirstProject
                         totaal2 += dealerkaart(totaaldealer);
                         await Task.Delay(500);
                         Console.WriteLine($"De dealer heeft nu {totaal2}");
-                        if (totaal2 <= 21) {
-                            if (totaal > totaal2)
-                            {
-                                wallet = +inzet;
-                                Console.WriteLine($"Gewonnen! wallet is nu {wallet}");
-                            }
-                            else if (totaal == totaal2) { Console.WriteLine("Gelijkspel! je wallet blijft hetzelfde"); }
-                            else
-                            {
-                                wallet -= inzet;
-                                Console.WriteLine($"Helaas, je wallet is nu {wallet}");
-                            }
-                        }
-                        else {
-                            wallet = +inzet;
-                            Console.WriteLine($"Dealer teveel! wallet is nu {wallet}");
-                        }
+                        if (totaal2 <= 21) { Dealerbust = false; }
+                        else { Dealerbust = true; }
                         await Task.Delay(500);
                     }
 
 
+                    if (Dealerbust == false)
+                    {
+                        if (totaal > totaal2) {
+                            wallet =+ inzet;
+                            Console.WriteLine($"Gewonnen! wallet is nu {wallet}"); }
+                        else if (totaal == totaal2) { Console.WriteLine("Gelijkspel! je wallet blijft hetzelfde"); }
+                        else {
+                            wallet -= inzet;
+                            Console.WriteLine($"Helaas, je wallet is nu {wallet}"); }
+                    }
+                    else
+                    {
+                        wallet = +inzet;
+                        Console.WriteLine($"Gewonnen! wallet is nu {wallet}");
+                    }
                 }
+                
 
 
                 
